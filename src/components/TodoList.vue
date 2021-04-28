@@ -1,45 +1,71 @@
 <template>
-  <div>
-    <div>
-      <div>
-        <a-button @click="isAddingNewTodo = !isAddingNewTodo" type="button">
-          <a-icon type="plus" title="add new todo" />
-        </a-button>
-        <p>Add new Todo</p>
-      </div>
+  <div class="flex column center">
+    <div class="flex row container spaced vertical-align">
+      <a-button
+        class="control-btn"
+        @click="isAddingNewTodo = !isAddingNewTodo"
+        type="button"
+        icon="plus"
+        title="add new todo"
+      />
+
+      <h1 class="no-mp" v-show="currentPath === `/todos`">
+        Your Todo List
+      </h1>
+      <h1 class="no-mp" v-show="currentPath === `/archived-todos`">
+        Your Archived Todo List
+      </h1>
+
+      <!-- Вынести на отдельную страницу -->
       <AddTodoItem
         v-show="isAddingNewTodo"
         :addNewTodo="addNewTodo"
         @addingNewTodoComplete="addingNewTodoComplete"
         @cancelAddingNewTodo="cancelAddingNewTodo"
       />
-    </div>
-    <a-icon @click="increaseInSort = false" type="arrow-up" />
-    <a-icon @click="increaseInSort = true" type="arrow-down" />
 
-    <a-list
-      :data-source="increaseInSort ? sortedUpTodoList : sortedDownTodoList"
-      :loading="loading"
-      :split="false"
-      :grid="{ suze: `middle` }"
-    >
-      <a-list-item
-        :class="[todo.done && 'done', `red todo-container`]"
-        slot="renderItem"
-        slot-scope="todo"
-        :key="todo.id"
-      >
-        <TodoItem
-          :getTodos="getTodos"
-          :unArchiveTodo="unArchiveTodo"
-          :archiveTodo="archiveTodo"
-          :updateTodo="updateTodo"
-          :deleteTodo="deleteTodo"
-          :currentPath="currentPath"
-          :todo="todo"
+      <div>
+        <a-button
+          class="control-btn"
+          @click="increaseInSort = true"
+          icon="arrow-down"
+          title="sort desending"
         />
-      </a-list-item>
-    </a-list>
+        <a-button
+          class="control-btn"
+          @click="increaseInSort = false"
+          icon="arrow-up"
+          title="sort increasing"
+        />
+      </div>
+    </div>
+
+    <div class="container">
+      <a-list
+        :data-source="increaseInSort ? sortedUpTodoList : sortedDownTodoList"
+        :loading="loading"
+        :split="false"
+        :grid="{ suze: `middle` }"
+      >
+        <a-list-item
+          :class="[todo.done && 'done']"
+          slot="renderItem"
+          slot-scope="todo"
+          :key="todo.id"
+        >
+          <TodoItem
+            :log="log"
+            :getTodos="getTodos"
+            :unArchiveTodo="unArchiveTodo"
+            :archiveTodo="archiveTodo"
+            :updateTodo="updateTodo"
+            :deleteTodo="deleteTodo"
+            :currentPath="currentPath"
+            :todo="todo"
+          />
+        </a-list-item>
+      </a-list>
+    </div>
   </div>
 </template>
 
@@ -167,12 +193,24 @@ export default {
 .done {
   text-decoration: line-through;
 }
-.red {
-  color: red;
-}
-.todo-container {
-  display: flex;
-  justify-content: center;
+
+.vertical-align {
   align-items: center;
+}
+
+.control-btn {
+  border: none;
+  box-shadow: 0 0 0;
+}
+
+.container {
+  margin-top: 40px;
+  min-width: 400px;
+  width: 40%;
+}
+
+.no-mp {
+  margin: 0;
+  padding: 0;
 }
 </style>

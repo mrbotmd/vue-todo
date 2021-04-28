@@ -2,8 +2,7 @@
   <a-card
     @click.prevent="expandCard"
     hoverable
-    :class="[isSelected && `selected`]"
-    style="width: 500px"
+    :class="[isSelected && `selected`, `relative`]"
   >
     <a-card-meta
       :title="curTodo.title"
@@ -12,11 +11,8 @@
     >
     </a-card-meta>
 
-    <!-- <h1>{{ curTodo.title }}</h1>
-    <p>{{ curTodo.description }}</p> -->
-
     <div v-show="isEditable">
-      <form @submit.prevent="updateTodo(curTodo.id, todo)">
+      <form>
         <a-input
           v-model="curTodo.title"
           type="text"
@@ -28,49 +24,66 @@
           type="text"
           :placeholder="curTodo.description"
         />
-        <a-button @click="isEditable = !isEditable" type="submit"
-          >Save</a-button
+        <a-button
+          @click="handleTodoAction(`updateTodo`, curTodo)"
+          type="submit"
         >
+          Save
+        </a-button>
         <a-button @click="cancelEdit" type="button">
           Cancel
         </a-button>
       </form>
     </div>
 
-    <a-icon v-show="isSelected" type="fullscreen" />
-    <div v-show="isSelected" class="ant-card-actions">
+    <a-button
+      class="expand"
+      v-show="isSelected"
+      icon="fullscreen"
+      title="expand todo"
+    />
+    <div v-show="isSelected">
       <a-space>
         <a-button
+          class="control-btn"
           @click="handleTodoAction(`updateTodo`, { done: !curTodo.done })"
-        >
-          <a-icon type="check" />
-        </a-button>
+          icon="check"
+          title="complete todo"
+        />
 
         <a-button
+          class="control-btn"
           v-if="currentPath !== '/archived-todos'"
           @click="
             handleTodoAction(`archiveTodo`, { archived: !curTodo.archived })
           "
-        >
-          <a-icon type="download" />
-        </a-button>
+          icon="download"
+          title="archive todo"
+        />
 
         <a-button
+          class="control-btn"
           v-else
           @click="
             handleTodoAction(`unArchiveTodo`, { archived: !curTodo.archived })
           "
-        >
-          <a-icon type="upload" title="unarchive" />
-        </a-button>
+          icon="upload"
+          title="unarchive todo"
+        />
 
-        <a-button @click="handleTodoAction(`deleteTodo`)">
-          <a-icon type="delete" />
-        </a-button>
+        <a-button
+          class="control-btn"
+          @click="handleTodoAction(`deleteTodo`)"
+          icon="delete"
+          title="delete todo"
+        />
 
-        <a-button @click="isEditable = !isEditable">
-          <a-icon type="edit" />
-        </a-button>
+        <a-button
+          class="control-btn"
+          @click="isEditable = !isEditable"
+          icon="edit"
+          title="edit todo"
+        />
       </a-space>
     </div>
   </a-card>
@@ -121,7 +134,9 @@ export default {
     },
 
     handleTodoAction(action, data) {
+      console.log(data);
       this[action](this.curTodo.id, { ...this.curTodo, ...data });
+      this.isEditable ? (this.isEditable = false) : this.isEditable;
     },
   },
 };
@@ -130,5 +145,23 @@ export default {
 <style scoped>
 .selected {
   border: 1px solid lightblue;
+}
+
+.bigger-btn {
+  font-size: 1.5rem;
+}
+
+.control-btn {
+  border: none;
+  box-shadow: 0 0 0;
+}
+
+.expand {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  font-size: 1.5rem;
+  border: none;
+  text-align: center;
 }
 </style>
