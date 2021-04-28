@@ -27,15 +27,15 @@
       <div>
         <a-button
           class="control-btn"
-          @click="increaseInSort = true"
+          @click="increaseInSort = false"
           icon="arrow-down"
-          title="sort desending"
+          title="show newest todos"
         />
         <a-button
           class="control-btn"
-          @click="increaseInSort = false"
+          @click="increaseInSort = true"
           icon="arrow-up"
-          title="sort increasing"
+          title="show oldest todos"
         />
       </div>
     </div>

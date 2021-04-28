@@ -1,20 +1,6 @@
 {
   "todos": [
     {
-      "id": 16,
-      "title": "уфцуфцу2edawdadawda",
-      "description": "eeeeeeeeee",
-      "done": false,
-      "archived": false
-    },
-    {
-      "id": 17,
-      "title": "уфцуфцу2eeeee",
-      "description": "dawdwa",
-      "done": false,
-      "archived": false
-    },
-    {
       "id": 18,
       "title": "eqeqw",
       "description": "eqeq",
@@ -34,30 +20,37 @@
       "description": "ффффффф",
       "done": false,
       "archived": false
-    }
-  ],
-  "archived-todos": [
+    },
     {
       "id": 3,
       "title": "Buy milk",
       "description": "buy 2 litters of milk",
       "done": false,
-      "archived": true
+      "archived": false
     },
     {
       "id": 7,
       "title": "eqeq",
       "description": "dawda",
       "done": false,
-      "archived": true
+      "archived": false
     },
     {
       "id": 8,
       "title": "eeeeeeeeee",
       "description": "qqqqqqqqq",
       "done": false,
-      "archived": true
+      "archived": false
     },
+    {
+      "id": 21,
+      "title": "dawwwww",
+      "description": "eeeeeeeeeeee",
+      "done": false,
+      "archived": false
+    }
+  ],
+  "archived-todos": [
     {
       "id": 9,
       "title": "eqqqsdad",
@@ -75,6 +68,20 @@
     {
       "id": 15,
       "title": "уфцуфцу2",
+      "description": "dawdwa",
+      "done": false,
+      "archived": true
+    },
+    {
+      "id": 16,
+      "title": "уфцуфцу2edawdadawda",
+      "description": "eeeeeeeeee",
+      "done": true,
+      "archived": true
+    },
+    {
+      "id": 17,
+      "title": "уфцуфцу2eeeee",
       "description": "dawdwa",
       "done": false,
       "archived": true

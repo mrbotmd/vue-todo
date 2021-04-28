@@ -45,7 +45,7 @@
     <div v-show="isSelected">
       <a-space>
         <a-button
-          class="control-btn"
+          :class="[todo.done && `complete`, `over-complete control-btn`]"
           @click="handleTodoAction(`updateTodo`, { done: !curTodo.done })"
           icon="check"
           title="complete todo"
@@ -72,14 +72,14 @@
         />
 
         <a-button
-          class="control-btn"
+          class="over-danger control-btn"
           @click="handleTodoAction(`deleteTodo`)"
           icon="delete"
           title="delete todo"
         />
 
         <a-button
-          class="control-btn"
+          :class="[isEditable && `edit`, `over-edit control-btn`]"
           @click="isEditable = !isEditable"
           icon="edit"
           title="edit todo"
@@ -154,6 +154,33 @@ export default {
 .control-btn {
   border: none;
   box-shadow: 0 0 0;
+}
+
+.complete,
+.complete:focus {
+  color: rgb(78, 194, 78);
+}
+
+.over-complete:hover {
+  color: rgb(78, 194, 78);
+}
+
+.danger,
+.danger:focus {
+  color: rgb(219, 64, 64);
+}
+
+.over-danger:hover {
+  color: rgb(219, 64, 64);
+}
+
+.edit,
+.edit:focus {
+  color: rgb(207, 169, 42);
+}
+
+.over-edit:hover {
+  color: rgb(207, 169, 42);
 }
 
 .expand {
