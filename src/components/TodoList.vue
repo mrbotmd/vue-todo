@@ -53,7 +53,7 @@
           slot-scope="todo"
           :key="todo.id"
         >
-          <TodoItem
+          <TodoListItem
             :log="log"
             :getTodos="getTodos"
             :unArchiveTodo="unArchiveTodo"
@@ -71,12 +71,12 @@
 
 <script>
 import axios from "axios";
-import TodoItem from "./TodoItem";
+import TodoListItem from "./TodoListItem";
 import AddTodoItem from "./AddTodoItem";
 
 export default {
   name: "ToDoList",
-  components: { TodoItem, AddTodoItem },
+  components: { TodoListItem, AddTodoItem },
 
   data() {
     return {
