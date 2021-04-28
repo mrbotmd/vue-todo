@@ -1,6 +1,6 @@
 <template>
   <a-card
-    @click="isSelected = !isSelected"
+    @click.prevent="expandCard"
     hoverable
     :class="[isSelected && `selected`]"
     style="width: 500px"
@@ -11,6 +11,9 @@
       v-show="!isEditable"
     >
     </a-card-meta>
+
+    <!-- <h1>{{ curTodo.title }}</h1>
+    <p>{{ curTodo.description }}</p> -->
 
     <div v-show="isEditable">
       <form @submit.prevent="updateTodo(curTodo.id, todo)">
@@ -119,6 +122,18 @@ export default {
   },
 
   methods: {
+    expandCard(e) {
+      console.log(e.target);
+      const targets = [
+        "ant-card-meta-detail",
+        "ant-card-meta-title",
+        "and-catd-meta-description",
+        "ant-card-body",
+      ];
+      if (targets.includes(e.target.className))
+        this.isSelected = !this.isSelected;
+    },
+
     cancelEdit() {
       this.curTodo = { ...this.todo };
       this.isEditable = false;
