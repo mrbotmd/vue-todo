@@ -61,40 +61,16 @@
             handleTodoAction(`unArchiveTodo`, { archived: !curTodo.archived })
           "
         >
-          <label :for="`unArchiveTodo${curTodo.id}`" class="pointer">
-            <a-icon type="upload" title="unarchive" />
-          </label>
+          <a-icon type="upload" title="unarchive" />
         </a-button>
 
-        <div>
-          <a-button>
-            <label :for="`deleteTodo${curTodo.id}`" class="pointer">
-              <a-icon type="delete" />
-            </label>
-          </a-button>
-          <input
-            @change="deleteTodo(curTodo.id)"
-            style="display: none"
-            type="checkbox"
-            :name="`deleteTodo${curTodo.id}`"
-            :id="`deleteTodo${curTodo.id}`"
-          />
-        </div>
+        <a-button @click="handleTodoAction(`deleteTodo`)">
+          <a-icon type="delete" />
+        </a-button>
 
-        <div>
-          <a-button>
-            <label :for="`editTodo${curTodo.id}`">
-              <a-icon type="edit" />
-            </label>
-          </a-button>
-          <input
-            @change="isEditable = !isEditable"
-            style="display: none"
-            type="checkbox"
-            :name="`editTodo${curTodo.id}`"
-            :id="`editTodo${curTodo.id}`"
-          />
-        </div>
+        <a-button @click="isEditable = !isEditable">
+          <a-icon type="edit" />
+        </a-button>
       </a-space>
     </div>
   </a-card>
@@ -115,19 +91,24 @@ export default {
 
   data() {
     return {
-      curTodo: { ...this.todo },
+      curTodo: this.todo,
       isEditable: false,
       isSelected: false,
     };
   },
 
+  watch: {
+    todo: function() {
+      this.curTodo = this.todo;
+    },
+  },
+
   methods: {
     expandCard(e) {
-      console.log(e.target);
       const targets = [
         "ant-card-meta-detail",
         "ant-card-meta-title",
-        "and-catd-meta-description",
+        "ant-card-meta-description",
         "ant-card-body",
       ];
       if (targets.includes(e.target.className))
@@ -140,7 +121,10 @@ export default {
     },
 
     handleTodoAction(action, data) {
-      this[action](this.todo.id, { ...this.curTodo, ...data });
+      console.log("todo", this.todo.done);
+      console.log("curTodo", this.curTodo.done);
+      console.log(data);
+      this[action](this.curTodo.id, { ...this.curTodo, ...data });
     },
   },
 };

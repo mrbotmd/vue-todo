@@ -30,7 +30,6 @@
         :key="todo.id"
       >
         <TodoItem
-          :log="log"
           :getTodos="getTodos"
           :unArchiveTodo="unArchiveTodo"
           :archiveTodo="archiveTodo"
@@ -79,8 +78,8 @@ export default {
   },
 
   methods: {
-    log(item) {
-      console.log(item);
+    log(e) {
+      console.log(e.target.className);
     },
 
     cancelAddingNewTodo(state) {

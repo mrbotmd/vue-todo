@@ -1,20 +1,6 @@
 {
   "todos": [
     {
-      "id": 10,
-      "title": "eqe",
-      "description": "qweq",
-      "done": false,
-      "archived": false
-    },
-    {
-      "id": 11,
-      "title": "dadaw",
-      "description": "dawdaw",
-      "done": false,
-      "archived": false
-    },
-    {
       "id": 12,
       "title": "dawdwa",
       "description": "daaw",
@@ -76,13 +62,6 @@
       "description": "ффффффф",
       "done": false,
       "archived": false
-    },
-    {
-      "id": 4,
-      "title": "Buy milkewaeaw",
-      "description": "buy 2 litters of milk",
-      "done": true,
-      "archived": false
     }
   ],
   "archived-todos": [
@@ -111,6 +90,13 @@
       "id": 9,
       "title": "eqqqsdad",
       "description": "dawws223232",
+      "done": true,
+      "archived": true
+    },
+    {
+      "id": 10,
+      "title": "eqe",
+      "description": "qweq",
       "done": true,
       "archived": true
     }
