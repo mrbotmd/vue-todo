@@ -91,7 +91,7 @@ export default {
 
   data() {
     return {
-      curTodo: this.todo,
+      curTodo: { ...this.todo },
       isEditable: false,
       isSelected: false,
     };
@@ -99,7 +99,7 @@ export default {
 
   watch: {
     todo: function() {
-      this.curTodo = this.todo;
+      this.curTodo = { ...this.todo };
     },
   },
 
@@ -121,9 +121,6 @@ export default {
     },
 
     handleTodoAction(action, data) {
-      console.log("todo", this.todo.done);
-      console.log("curTodo", this.curTodo.done);
-      console.log(data);
       this[action](this.curTodo.id, { ...this.curTodo, ...data });
     },
   },
