@@ -4,9 +4,9 @@
     hoverable
     :class="[isSelected && `selected`, `relative`]"
   >
-    <h4 class="todo-heading" style=" overflow-wrap: break-word">
+    <h2 class="todo-heading" style=" overflow-wrap: break-word">
       {{ curTodo.title }}
-    </h4>
+    </h2>
     <p class="todo-description" style=" overflow-wrap: break-word">
       {{ curTodo.description }}
     </p>
