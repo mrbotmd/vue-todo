@@ -1,10 +1,12 @@
 <template>
   <div>
-    <div v-show="loading">loading...</div>
     <div>
-      <button @click="isAddingNewTodo = !isAddingNewTodo" type="button">
-        Create new Todo
-      </button>
+      <div>
+        <a-button @click="isAddingNewTodo = !isAddingNewTodo" type="button">
+          <a-icon type="plus" title="add new todo" />
+        </a-button>
+        <p>Add new Todo</p>
+      </div>
       <AddTodoItem
         v-show="isAddingNewTodo"
         :addNewTodo="addNewTodo"
@@ -12,10 +14,19 @@
         @cancelAddingNewTodo="cancelAddingNewTodo"
       />
     </div>
-    <ul>
-      <li
+    <a-icon @click="increaseInSort = false" type="arrow-up" />
+    <a-icon @click="increaseInSort = true" type="arrow-down" />
+
+    <a-list
+      :data-source="increaseInSort ? sortedUpTodoList : sortedDownTodoList"
+      :loading="loading"
+      :split="false"
+      :grid="{ suze: `middle` }"
+    >
+      <a-list-item
         :class="[todo.done && 'done', `red todo-container`]"
-        v-for="todo in todoList"
+        slot="renderItem"
+        slot-scope="todo"
         :key="todo.id"
       >
         <TodoItem
@@ -28,8 +39,8 @@
           :currentPath="currentPath"
           :todo="todo"
         />
-      </li>
-    </ul>
+      </a-list-item>
+    </a-list>
   </div>
 </template>
 
@@ -44,6 +55,7 @@ export default {
 
   data() {
     return {
+      increaseInSort: true,
       isAddingNewTodo: false,
       loading: false,
       todoList: [],
@@ -54,6 +66,16 @@ export default {
   created() {
     console.log(this.$router.history.current.path);
     this.getTodos(`http://localhost:3000${this.$router.history.current.path}/`);
+  },
+
+  computed: {
+    sortedUpTodoList() {
+      return [...this.todoList].sort((a, b) => a.id - b.id);
+    },
+
+    sortedDownTodoList() {
+      return [...this.todoList].sort((a, b) => b.id - a.id);
+    },
   },
 
   methods: {
@@ -99,8 +121,9 @@ export default {
     },
 
     updateTodo(id, data) {
+      console.log(data);
       axios
-        .put(`http://localhost:3000/todos/${id}`, { ...data })
+        .put(`http://localhost:3000/todos/${id}`, data)
         .then(
           (res) =>
             res.status === 200 &&
@@ -126,10 +149,7 @@ export default {
       axios
         .post(`http://localhost:3000/archived-todos/`, { ...data })
         .then(
-          (res) =>
-            res.status >= 200 &&
-            res.status < 300 &&
-            this.deleteTodo("http://localhost:3000/todos", id)
+          (res) => res.status >= 200 && res.status < 300 && this.deleteTodo(id)
         );
     },
     unArchiveTodo(id, data) {
@@ -137,10 +157,7 @@ export default {
       axios
         .post(`http://localhost:3000/todos/`, { ...data })
         .then(
-          (res) =>
-            res.status >= 200 &&
-            res.status < 300 &&
-            this.deleteTodo("http://localhost:3000/archived-todos", id)
+          (res) => res.status >= 200 && res.status < 300 && this.deleteTodo(id)
         );
     },
   },

@@ -1,10 +1,10 @@
 <template>
   <form @submit.prevent="handleFormSubmit">
     <label for="">Title</label>
-    <input type="text" name="" id="" v-model="title" />
+    <a-input type="text" name="" id="" v-model="title" />
 
     <label for="">Description</label>
-    <input type="text" name="" id="" v-model="description" />
+    <a-textarea :rows="4" type="text" name="" id="" v-model="description" />
     <button type="submit">add</button>
     <button @click="cancelAdding" type="button">cancel</button>
   </form>

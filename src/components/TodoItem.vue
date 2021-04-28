@@ -1,93 +1,100 @@
 <template>
-  <div>
-    <!-- <input
-      @change="log(todo)"
-      type="checkbox"
-      :name="`selectedTodo${todo.id}`"
-      :id="`selectedTodo${todo.id}`"
-      v-model="todo.selected"
-      aria-label="todo-select"
-    /> -->
+  <a-card
+    @click="isSelected = !isSelected"
+    hoverable
+    :class="[isSelected && `selected`]"
+    style="width: 500px"
+  >
+    <a-card-meta
+      :title="curTodo.title"
+      :description="curTodo.description"
+      v-show="!isEditable"
+    >
+    </a-card-meta>
 
-    <div v-show="!isEditable">
-      <h4>{{ todo.title }}</h4>
-      <p>{{ todo.description }}</p>
-    </div>
     <div v-show="isEditable">
-      <form @submit.prevent="updateTodo(todo.id, todo)">
-        <input v-model="todo.title" type="text" :placeholder="todo.title" />
-        <input
-          v-model="todo.description"
+      <form @submit.prevent="updateTodo(curTodo.id, todo)">
+        <a-input
+          v-model="curTodo.title"
           type="text"
-          :placeholder="todo.description"
+          :placeholder="curTodo.title"
         />
-        <button @click="isEditable = !isEditable" type="submit">Save</button>
-        <button @click="cancelEdit" type="button">
+        <a-textarea
+          :rows="4"
+          v-model="curTodo.description"
+          type="text"
+          :placeholder="curTodo.description"
+        />
+        <a-button @click="isEditable = !isEditable" type="submit"
+          >Save</a-button
+        >
+        <a-button @click="cancelEdit" type="button">
           Cancel
-        </button>
+        </a-button>
       </form>
     </div>
 
-    <div>
-      <label :for="`completeTodo${todo.id}`"> complete </label>
-      <input
-        @change="updateTodo(todo.id, todo)"
-        style="display: none"
-        type="checkbox"
-        :name="`completeTodo${todo.id}`"
-        :id="`completeTodo${todo.id}`"
-        v-model="todo.done"
-      />
+    <a-icon v-show="isSelected" type="fullscreen" />
+    <div v-show="isSelected" class="ant-card-actions">
+      <a-space>
+        <a-button
+          @click="handleTodoAction(`updateTodo`, { done: !curTodo.done })"
+        >
+          <a-icon type="check" />
+        </a-button>
 
-      <label
-        v-show="currentPath !== '/archived-todos'"
-        :for="`archiveTodo${todo.id}`"
-      >
-        archive
-      </label>
-      <input
-        @change="archiveTodo(todo.id, todo)"
-        style="display: none"
-        type="checkbox"
-        :name="`archiveTodo${todo.id}`"
-        :id="`archiveTodo${todo.id}`"
-        v-model="todo.archived"
-      />
+        <a-button
+          v-if="currentPath !== '/archived-todos'"
+          @click="
+            handleTodoAction(`archiveTodo`, { archived: !curTodo.archived })
+          "
+        >
+          <a-icon type="download" />
+        </a-button>
 
-      <label
-        v-show="currentPath === '/archived-todos'"
-        :for="`unArchiveTodo${todo.id}`"
-      >
-        unarchive
-      </label>
-      <input
-        @change="unArchiveTodo(todo.id, todo)"
-        style="display: none"
-        type="checkbox"
-        :name="`unArchiveTodo${todo.id}`"
-        :id="`unArchiveTodo${todo.id}`"
-        v-model="todo.archived"
-      />
+        <a-button
+          v-else
+          @click="
+            handleTodoAction(`unArchiveTodo`, { archived: !curTodo.archived })
+          "
+        >
+          <label :for="`unArchiveTodo${curTodo.id}`" class="pointer">
+            <a-icon type="upload" title="unarchive" />
+          </label>
+        </a-button>
 
-      <label :for="`deleteTodo${todo.id}`"> delete </label>
-      <input
-        @change="deleteTodo(todo.id)"
-        style="display: none"
-        type="checkbox"
-        :name="`deleteTodo${todo.id}`"
-        :id="`deleteTodo${todo.id}`"
-      />
+        <div>
+          <a-button>
+            <label :for="`deleteTodo${curTodo.id}`" class="pointer">
+              <a-icon type="delete" />
+            </label>
+          </a-button>
+          <input
+            @change="deleteTodo(curTodo.id)"
+            style="display: none"
+            type="checkbox"
+            :name="`deleteTodo${curTodo.id}`"
+            :id="`deleteTodo${curTodo.id}`"
+          />
+        </div>
 
-      <label :for="`editTodo${todo.id}`"> edit </label>
-      <input
-        @change="isEditable = !isEditable"
-        style="display: none"
-        type="checkbox"
-        :name="`editTodo${todo.id}`"
-        :id="`editTodo${todo.id}`"
-      />
+        <div>
+          <a-button>
+            <label :for="`editTodo${curTodo.id}`">
+              <a-icon type="edit" />
+            </label>
+          </a-button>
+          <input
+            @change="isEditable = !isEditable"
+            style="display: none"
+            type="checkbox"
+            :name="`editTodo${curTodo.id}`"
+            :id="`editTodo${curTodo.id}`"
+          />
+        </div>
+      </a-space>
     </div>
-  </div>
+  </a-card>
 </template>
 
 <script>
@@ -105,18 +112,27 @@ export default {
 
   data() {
     return {
+      curTodo: { ...this.todo },
       isEditable: false,
+      isSelected: false,
     };
   },
+
   methods: {
     cancelEdit() {
-      this.getTodos(`http://localhost:3000${this.currentPath}`).then((res) => {
-        console.log(res);
-        this.isEditable = !this.isEditable;
-      });
+      this.curTodo = { ...this.todo };
+      this.isEditable = false;
+    },
+
+    handleTodoAction(action, data) {
+      this[action](this.todo.id, { ...this.curTodo, ...data });
     },
   },
 };
 </script>
 
-<style></style>
+<style scoped>
+.selected {
+  border: 1px solid lightblue;
+}
+</style>
