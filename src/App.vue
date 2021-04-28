@@ -51,6 +51,10 @@ export default {
   justify-content: space-between;
 }
 
+.end {
+  justify-content: flex-end;
+}
+
 .control-btn {
   border: none;
   box-shadow: 0 0 0;

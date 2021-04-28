@@ -80,7 +80,7 @@ export default {
 
   data() {
     return {
-      increaseInSort: true,
+      increaseInSort: false,
       isAddingNewTodo: false,
       loading: false,
       todoList: [],

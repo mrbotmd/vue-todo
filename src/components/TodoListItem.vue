@@ -4,12 +4,12 @@
     hoverable
     :class="[isSelected && `selected`, `relative`]"
   >
-    <a-card-meta
-      :title="curTodo.title"
-      :description="curTodo.description"
-      v-show="!isEditable"
-    >
-    </a-card-meta>
+    <h4 class="todo-heading" style=" overflow-wrap: break-word">
+      {{ curTodo.title }}
+    </h4>
+    <p class="todo-description" style=" overflow-wrap: break-word">
+      {{ curTodo.description }}
+    </p>
 
     <div v-show="isEditable">
       <form>
@@ -37,12 +37,12 @@
     </div>
 
     <a-button
-      class="expand"
+      class="expand control-btn"
       v-show="isSelected"
       icon="fullscreen"
       title="expand todo"
     />
-    <div v-show="isSelected">
+    <div v-show="isSelected" class="flex end">
       <a-space>
         <a-button
           :class="[todo.done && `complete`, `over-complete control-btn`]"
@@ -118,12 +118,7 @@ export default {
 
   methods: {
     expandCard(e) {
-      const targets = [
-        "ant-card-meta-detail",
-        "ant-card-meta-title",
-        "ant-card-meta-description",
-        "ant-card-body",
-      ];
+      const targets = ["todo-description", "todo-heading", "ant-card-body"];
       if (targets.includes(e.target.className))
         this.isSelected = !this.isSelected;
     },
@@ -145,10 +140,6 @@ export default {
 <style scoped>
 .selected {
   border: 1px solid lightblue;
-}
-
-.bigger-btn {
-  font-size: 1.5rem;
 }
 
 .control-btn {
@@ -186,8 +177,8 @@ export default {
 .expand {
   position: absolute;
   top: 15px;
-  right: 15px;
-  font-size: 1.5rem;
+  right: 22px;
+  /* font-size: 1.5rem; */
   border: none;
   text-align: center;
 }
